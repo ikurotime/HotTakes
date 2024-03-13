@@ -6,8 +6,8 @@ import '@/styles/base.css'
 import '@fontsource/roboto'
 import '@fontsource/roboto/700.css'
 import Navbar from '../components/Navbar.astro'
-const { title } = Astro.props
 import { supabase } from '../lib/supabase'
+const { title } = Astro.props
 const { cookies, redirect } = Astro
 
 const access_token = Astro.cookies.get('sb-access-token')?.value
@@ -24,11 +24,13 @@ if (!access_token || !refresh_token) {
   cookies.delete('sb-access-token')
   cookies.delete('sb-refresh-token')
 }
-const { data, error } = await supabase.auth.getUser()
+const { data, error } = await supabase.auth.getSession()
+console.log(data)
 if (error) {
   console.error(error)
 }
-const user = data.user
+
+const user = data.session?.user
 ---
 
 <!doctype html>
