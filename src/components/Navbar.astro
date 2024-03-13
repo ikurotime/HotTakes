@@ -1,7 +1,7 @@
 ---
 import Button from './Button.astro'
 import Tab from './Tab.astro'
-
+import Profile from '../components/Profile'
 const { user } = Astro.props
 ---
 
@@ -21,11 +21,7 @@ const { user } = Astro.props
     <div class='flex items-center justify-end w-1/2 gap-5'>
       {
         user ? (
-          <img
-            class='w-12 h-12 rounded-full'
-            src={user?.user_metadata.avatar_url}
-            alt=''
-          />
+          <Profile client:load src={user?.user_metadata.avatar_url} />
         ) : (
           <>
             <Button href='/signin' label='Sign Up' />

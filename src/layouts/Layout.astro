@@ -2,11 +2,13 @@
 interface Props {
   title: string
 }
+import '@/styles/base.css'
 import '@fontsource/roboto'
 import '@fontsource/roboto/700.css'
 import Navbar from '../components/Navbar.astro'
 const { title } = Astro.props
 import { supabase } from '../lib/supabase'
+const { cookies, redirect } = Astro
 
 const access_token = Astro.cookies.get('sb-access-token')?.value
 const refresh_token = Astro.cookies.get('sb-refresh-token')?.value
@@ -18,12 +20,15 @@ if (access_token && refresh_token && !currentSession) {
     refresh_token
   })
 }
+if (!access_token || !refresh_token) {
+  cookies.delete('sb-access-token')
+  cookies.delete('sb-refresh-token')
+}
 const { data, error } = await supabase.auth.getUser()
 if (error) {
   console.error(error)
 }
 const user = data.user
-console.log(user, error)
 ---
 
 <!doctype html>
@@ -33,7 +38,6 @@ console.log(user, error)
     <meta name='description' content='Astro description' />
     <meta name='viewport' content='width=device-width' />
     <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
-    <link rel='stylesheet' href='/base.css' />
     <meta name='generator' content={Astro.generator} />
     <title>{title}</title>
   </head>
