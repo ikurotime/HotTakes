@@ -1,0 +1,72 @@
+---
+interface Props {
+  title: string
+}
+import '@fontsource/roboto'
+import '@fontsource/roboto/700.css'
+import Navbar from '../components/Navbar.astro'
+const { title } = Astro.props
+import { supabase } from '../lib/supabase'
+
+const access_token = Astro.cookies.get('sb-access-token')?.value
+const refresh_token = Astro.cookies.get('sb-refresh-token')?.value
+const currentSession = await supabase.auth.getSession()
+
+if (access_token && refresh_token && !currentSession) {
+  await supabase.auth.setSession({
+    access_token,
+    refresh_token
+  })
+}
+const { data, error } = await supabase.auth.getUser()
+if (error) {
+  console.error(error)
+}
+const user = data.user
+console.log(user, error)
+---
+
+<!doctype html>
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='description' content='Astro description' />
+    <meta name='viewport' content='width=device-width' />
+    <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
+    <link rel='stylesheet' href='/base.css' />
+    <meta name='generator' content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body class='flex flex-col min-h-screen font-roboto'>
+    <Navbar {user} />
+    <slot />
+  </body>
+</html>
+<style is:global>
+  :root {
+    --accent: 136, 58, 234;
+    --accent-light: 224, 204, 250;
+    --accent-dark: 49, 10, 101;
+    --accent-gradient: linear-gradient(
+      45deg,
+      rgb(var(--accent)),
+      rgb(var(--accent-light)) 30%,
+      white 60%
+    );
+  }
+  html {
+    background: #f7f7f5;
+    background-size: 224px;
+  }
+  code {
+    font-family:
+      Menlo,
+      Monaco,
+      Lucida Console,
+      Liberation Mono,
+      DejaVu Sans Mono,
+      Bitstream Vera Sans Mono,
+      Courier New,
+      monospace;
+  }
+</style>

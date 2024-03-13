@@ -1,0 +1,37 @@
+---
+import Layout from '../layouts/Layout.astro'
+
+const { cookies, redirect } = Astro
+
+const accessToken = cookies.get('sb-access-token')
+const refreshToken = cookies.get('sb-refresh-token')
+
+if (accessToken && refreshToken) {
+  return redirect('/')
+}
+---
+
+<Layout title='Sign in'>
+  <div class='flex flex-col justify-center flex-1 p-5 m-auto mt-10'>
+    <form
+      class='flex flex-col gap-4 p-10 bg-white border border-gray-300 rounded-lg'
+      action='/api/auth/signin'
+      method='post'
+    >
+      <h1 class='text-3xl font-bold'>Sign in</h1>
+      <p class='text-xl'>New here? <a href='/register'>Create an account</a></p>
+      <button
+        class='px-4 py-2 font-bold bg-white border border-gray-300 rounded-lg'
+        value='google'
+        name='provider'
+        type='submit'>Sign in with Google</button
+      >
+      <button
+        class='px-4 py-2 text-white border border-gray-300 rounded-lg bg-slate-800'
+        value='github'
+        name='provider'
+        type='submit'>Sign in with GitHub</button
+      >
+    </form>
+  </div>
+</Layout>

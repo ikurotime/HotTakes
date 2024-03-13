@@ -1,0 +1,12 @@
+---
+const { label, variant, href } = Astro.props
+const className = variant
+  ? 'bg-transparent  text-black'
+  : 'bg-black text-white '
+---
+
+<a
+  href={href}
+  class={'w-[85px] items-center align-middle flex justify-center rounded-lg h-[28px] border border-black text-xs ' +
+    className}>{label}</a
+>

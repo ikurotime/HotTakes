@@ -1,0 +1,37 @@
+---
+import Button from './Button.astro'
+import Tab from './Tab.astro'
+
+const { user } = Astro.props
+---
+
+<header class='flex h-[84px] w-full bg-white border-b border-b-gray-200'>
+  <nav class='h-full w-full max-w-[840px] justify-between m-auto flex flex-row'>
+    <div class='flex flex-col justify-between w-1/2'>
+      <div class='flex justify-between w-full pt-3'>
+        <span class='text-xl font-bold'>HotTakes.dev</span>
+      </div>
+      <div class='flex w-full gap-5'>
+        <Tab label='community' href='/' />
+        <Tab label='members' href='/members' />
+        <Tab label='leaderboard' href='/leaderboard' />
+        <Tab label='about' href='/about' />
+      </div>
+    </div>
+    <div class='flex items-center justify-end w-1/2 gap-5'>
+      {
+        user ? (
+          <img
+            class='w-12 h-12 rounded-full'
+            src={user?.user_metadata.avatar_url}
+            alt=''
+          />
+        ) : (
+          <>
+            <Button href='/signin' label='Sign Up' />
+          </>
+        )
+      }
+    </div>
+  </nav>
+</header>

@@ -1,0 +1,15 @@
+---
+const { href, label } = Astro.props
+
+//compare url to href
+const url = Astro.url.pathname
+const active = url === href ? 'border-b-2 border-black' : ''
+---
+
+<a
+  href={href}
+  class={'flex justify-center text-xs leading-8 h-[34px] capitalize text-gray-500 w-[85px] box-border ' +
+    active}
+>
+  <h2>{label}</h2>
+</a>
