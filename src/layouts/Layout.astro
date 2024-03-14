@@ -1,36 +1,44 @@
 ---
-interface Props {
-  title: string
-}
+import { supabase } from '@/lib/supabase'
 import '@/styles/base.css'
 import '@fontsource/roboto'
 import '@fontsource/roboto/700.css'
 import Navbar from '../components/Navbar.astro'
-import { supabase } from '../lib/supabase'
+interface Props {
+  title: string
+}
 const { title } = Astro.props
-const { cookies, redirect } = Astro
-
+const { cookies } = Astro
 const access_token = Astro.cookies.get('sb-access-token')?.value
 const refresh_token = Astro.cookies.get('sb-refresh-token')?.value
-const currentSession = await supabase.auth.getSession()
-
-if (access_token && refresh_token && !currentSession) {
-  await supabase.auth.setSession({
-    access_token,
-    refresh_token
-  })
-}
-if (!access_token || !refresh_token) {
+let user = null
+const { data: currentUserData } = await supabase.auth.getUser()
+const deleteCookies = () => {
   cookies.delete('sb-access-token')
   cookies.delete('sb-refresh-token')
 }
-const { data, error } = await supabase.auth.getSession()
-console.log(data)
-if (error) {
-  console.error(error)
-}
+console.log({ currentUserData })
 
-const user = data.session?.user
+if (currentUserData.user === null) {
+  deleteCookies()
+}
+if (access_token && refresh_token) {
+  const { data: dataSession, error: errorSession } =
+    await supabase.auth.setSession({
+      access_token,
+      refresh_token
+    })
+  // console.log({ dataSession })
+  // console.log({ errorSession })
+  const { data, error } = await supabase.auth.getUser()
+
+  //console.log(data)
+  if (error) {
+    console.error(error)
+    deleteCookies()
+  }
+  user = data?.user
+}
 ---
 
 <!doctype html>

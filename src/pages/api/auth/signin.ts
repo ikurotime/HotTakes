@@ -1,11 +1,10 @@
-import type { Provider } from '@supabase/supabase-js'
 import type { APIRoute } from 'astro'
+import type { Provider } from '@supabase/supabase-js'
 import { supabase } from '../../../lib/supabase'
 
 export const POST: APIRoute = async ({ request, cookies, redirect }) => {
   const formData = await request.formData()
   const provider = formData.get('provider')?.toString()
-  console.log('TEST')
   const validProviders = ['google', 'github', 'discord']
 
   if (provider && validProviders.includes(provider)) {
