@@ -1,7 +1,7 @@
 ---
+import Profile from '../components/Profile'
 import Button from './Button.astro'
 import Tab from './Tab.astro'
-import Profile from '../components/Profile'
 const { user } = Astro.props
 ---
 
@@ -13,7 +13,6 @@ const { user } = Astro.props
       </div>
       <div class='flex w-full gap-5'>
         <Tab label='community' href='/' />
-        <Tab label='members' href='/members' />
         <Tab label='leaderboard' href='/leaderboard' />
         <Tab label='about' href='/about' />
       </div>

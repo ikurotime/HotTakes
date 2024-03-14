@@ -1,17 +1,14 @@
 ---
-import Layout from '../layouts/Layout.astro'
-import Input from '../components/Input.astro'
 import Post from '@/components/Post.astro'
+import { supabase } from '@/lib/supabase'
+import Input from '../components/Input.astro'
+import Layout from '../layouts/Layout.astro'
+
+const posts = await supabase.from('post').select('*')
+console.log(posts)
 ---
 
 <Layout title='Welcome to Astro.'>
-  <div class='flex mx-auto flex-1 flex-col gap-y-4 py-8 w-full max-w-[840px]'>
-    <Input  />
-    <Post />
-    <Post />
-    <Post />
-    <Post />
-    <Post />
-    <Post />
-  </div>
+  <Input  />
+  <Post />
 </Layout>

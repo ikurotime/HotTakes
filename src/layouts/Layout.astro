@@ -53,7 +53,9 @@ if (access_token && refresh_token) {
   </head>
   <body class='flex flex-col min-h-screen font-roboto'>
     <Navbar {user} />
-    <slot />
+    <div class='flex mx-auto flex-1 flex-col gap-y-4 py-8 w-full max-w-[840px]'>
+      <slot />
+    </div>
   </body>
 </html>
 <style is:global>
